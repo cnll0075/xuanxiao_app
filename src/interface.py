@@ -25,3 +25,4 @@ class InputMessage(BaseModel):
     highestDegree: str
     GPA: float
     grade: str
+    userID: str
