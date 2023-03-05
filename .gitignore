@@ -1,0 +1,5 @@
+*__pycache__
+.ipynb_checkpoints
+data/classes_dict.picket
+data/majors.pkl
+data/eng_requirement_dict.pickle
