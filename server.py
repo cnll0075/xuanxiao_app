@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from src.interface import Major, InputMessage, TieredResult, tier_name_mapping
 import json
-
+import time
 app = FastAPI()
 
 @app.post("/select-majors", response_model=list[TieredResult])
 def code_bot(msg: InputMessage):
     td = test_data()
-    print(td[0])
-    
+    #print(td[0])
+    time.sleep(1)
     res = [TieredResult(tierRanking=i, tierName=tier_name_mapping[i], majorList=td[i]) for i in range(3)]
     return res
 
