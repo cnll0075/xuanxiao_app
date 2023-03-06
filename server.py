@@ -1,8 +1,14 @@
 from fastapi import FastAPI
 from src.interface import Major, InputMessage, TieredResult, tier_name_mapping
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import PlainTextResponse
 import json
 import time
 app = FastAPI()
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return PlainTextResponse(str(exc), status_code=400)
 
 @app.post("/select-majors", response_model=list[TieredResult])
 def code_bot(msg: InputMessage):
