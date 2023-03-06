@@ -22,6 +22,7 @@ class InputMessage(BaseModel):
     countryInterested: str
     majorInterested: str
     estimatedEntranceTime: str
+    estimatedApplicationTime: str
     highestDegree: str
     GPA: float
     grade: str
