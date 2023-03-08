@@ -4,27 +4,29 @@ import pickle
 from pathlib import Path
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
+import os
 
-p = Path('.')
-with open(p/'../data/211.pickle', 'rb') as f:
+cwd = os.getcwd()
+p = Path(cwd)
+with open(p/'data/211.pickle', 'rb') as f:
     school_211 = pickle.load(f)
 
-with open(p/'../data/985.pickle', 'rb') as f:
+with open(p/'data/985.pickle', 'rb') as f:
     school_985 = pickle.load(f)
 
-with open(p/'../data/chinese_schools.pickle', 'rb') as f:
+with open(p/'data/chinese_schools.pickle', 'rb') as f:
     chinese_schools = pickle.load(f)
 
-with open(p/'../data/zhuanke_schools.pickle', 'rb') as f:
+with open(p/'data/zhuanke_schools.pickle', 'rb') as f:
     zhuanke_schools = pickle.load(f)
 
-with open(p/'../data/minban_schools.pickle', 'rb') as f:
+with open(p/'data/minban_schools.pickle', 'rb') as f:
     minban_schools = pickle.load(f)
 
-with open(p/'../data/heban_schools.pickle', 'rb') as f:
+with open(p/'data/heban_schools.pickle', 'rb') as f:
     heban_schools = pickle.load(f)
 
-with open('../data/top_qs_100_schools.pickle', 'rb') as f:
+with open('data/top_qs_100_schools.pickle', 'rb') as f:
     top_qs_100_schools = pickle.load(f)
 
 GPA_MEAN = 84.94

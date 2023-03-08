@@ -2,10 +2,11 @@ import pandas as pd
 from pathlib import Path
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
+import os
 
-
-p = Path('.')
-_t = pd.read_csv(p/"../data/all_applicant_training_data.csv")
+cwd = os.getcwd()
+p = Path(cwd)
+_t = pd.read_csv(p/"data/all_applicant_training_data.csv")
 _t = _t[_t['gpa_normalized'].notna()]
 _t = _t[_t['qs_ranking'].notna()]
 
@@ -33,7 +34,9 @@ def _get_ranges(rankings):
     return top_ranges, middle_ranges, bottom_ranges
 
 
-def qs_ranking_ranges(featurized_data: list):
-    rankings = _inference(featurized_data)
+def predict_qs_ranking_ranges(featurized_data: list):
+    neighbors = _inference(featurized_data)
+    rankings = []
+    rankings = _t.iloc[neighbors[0]]['qs_ranking'].dropna().to_list()
     rankings.sort()
     return _get_ranges(rankings)

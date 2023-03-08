@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from src.interface import Major, InputMessage, TieredResult, tier_name_mapping
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
+from src.school_finder import find_schools
 import json
 import time
 app = FastAPI()
@@ -12,6 +13,8 @@ async def validation_exception_handler(request, exc):
 
 @app.post("/select-majors", response_model=list[TieredResult])
 def code_bot(msg: InputMessage):
+    candidate_schools = find_schools(msg)
+    print(candidate_schools)
     td = test_data()
     #print(td[0])
     time.sleep(1)
