@@ -2,7 +2,7 @@ import pandas as pd
 from src.interface import InputMessage
 from pathlib import Path
 import os
-
+from fastapi import HTTPException
 
 region_map = {"澳洲": 'Australia', 
               '英国': 'Britain', 
@@ -18,7 +18,8 @@ major_map = {"商科": "商科",
              "人文社科": ["社科"],
              "法学": ["法律"],
              "医学": ["医学", "公共卫生"],
-             "其他": ["数学", "生物", "化学", "生物工程", "物理", "地球科学"] }
+             "基础理论学科": ["数学", "生物", "化学", "生物工程", "物理", "地球科学"],
+             "艺术": [] }
 
 tuition_map = {"10万/年以下": [0,100000],
                "10~25万/年": [100000, 250000],
@@ -34,9 +35,14 @@ all_majors = pd.read_csv(p/"data/指南者专业信息全.csv")
 
 def _filter_school_by_region_and_major(msg: InputMessage, df):
     country = msg.countryInterested
+    if country not in region_map:
+        raise HTTPException(status_code=400, detail=f"'{country}' is not a valid key")
     region = region_map[country]
 
     major = msg.majorInterested
+    if major not in major_map:
+        raise HTTPException(status_code=400, detail=f"'{major}' is not a valid key")
+    
     mapped_major = major_map[major]
 
     if isinstance(mapped_major, str):
@@ -49,6 +55,9 @@ def _filter_school_by_region_and_major(msg: InputMessage, df):
 
 def _filter_school_by_tuition(msg: InputMessage, df):
     tuition_budget = msg.tuitionRange
+
+    if tuition_budget not in tuition_map:
+        raise HTTPException(status_code=400, detail=f"'{tuition_budget}' is not a valid key")
     tuition_range = tuition_map[tuition_budget]
     _df = df[(df['tuition_cny'] < tuition_range[1]) & (df['tuition_cny'] > tuition_range[0])]
     return _df
