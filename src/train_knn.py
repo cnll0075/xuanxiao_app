@@ -20,16 +20,16 @@ def _inference(featurized_data: list):
 
 
 def _get_ranges(rankings):
-    top_3 = rankings[:3]
-    bottom_3 = rankings[-3:]
-    middle = rankings[3:-3]
+    top_3 = rankings[:4]
+    bottom_3 = rankings[-4:]
+    middle = rankings[4:-4]
     
     top_3_avg = np.mean(top_3)
     bottom_3_avg = np.mean(bottom_3)
     middle_avg = np.mean(middle)
 
-    top_ranges = (top_3_avg - 20, top_3_avg + 20)
-    middle_ranges = (middle_avg - 20, middle_avg + 20)
+    top_ranges = (top_3_avg - 10, top_3_avg + 20)
+    middle_ranges = (top_3_avg + 20, middle_avg + 20)
     bottom_ranges = (bottom_3_avg - 20, bottom_3_avg + 20)
     return top_ranges, middle_ranges, bottom_ranges
 

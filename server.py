@@ -2,23 +2,37 @@ from fastapi import FastAPI
 from src.interface import Major, InputMessage, TieredResult, tier_name_mapping
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse
-from src.school_finder import find_schools
+from src.school_finder import find_schools, find_majors
 import json
 import time
 app = FastAPI()
+import uvicorn
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
     return PlainTextResponse(str(exc), status_code=400)
 
 @app.post("/select-majors", response_model=list[TieredResult])
-def code_bot(msg: InputMessage):
-    candidate_schools = find_schools(msg)
-    print(candidate_schools)
-    td = test_data()
-    #print(td[0])
-    time.sleep(1)
-    res = [TieredResult(tierRanking=i, tierName=tier_name_mapping[i], majorList=td[i]) for i in range(3)]
+def major_selection(msg: InputMessage):
+    majors = find_majors(msg)
+    # td = test_data()
+    # #print(td[0])
+    # time.sleep(1)
+    #res = [TieredResult(tierRanking=i, tierName=tier_name_mapping[i], majorList=td[i]) for i in range(3)]
+    res = []
+    for _, major in enumerate(majors):
+        major_list = []
+        for i in range(len(major)):
+            m = Major(schoolName =major['school_name'].iloc[i], 
+                      schoolEnglishName = major['en_name'].iloc[i], 
+                      specializedSubject = major['ch_name'].iloc[i], 
+                      region = major['region'].iloc[i], 
+                      qsRanking = str(major['qs_ranking'].iloc[i]), 
+                      qsRanking_top_100 = major['is_qs_top_100'].iloc[i], 
+                      major_id = major['url'].iloc[i])
+            major_list.append(m)
+        major_list.sort()
+        res.append(TieredResult(tierRanking=_, tierName=tier_name_mapping[_], majorList=major_list))
     return res
 
 
@@ -89,3 +103,6 @@ def test_data():
                qsRanking_top_100=False,
                major_id=9)
     return [[m1, m2, m3], [m4, m5, m6], [m7, m8, m9]]
+
+if __name__ == "__main__":
+    uvicorn.run(app, host='0.0.0.0', port=8000)

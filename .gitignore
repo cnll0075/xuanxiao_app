@@ -4,3 +4,4 @@ data/classes_dict.picket
 data/majors.pkl
 data/eng_requirement_dict.pickle
 .DS_STORE
+.vscode

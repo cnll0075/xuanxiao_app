@@ -1,6 +1,7 @@
+from functools import total_ordering
 from pydantic import BaseModel
 
-class Major(BaseModel):
+class Major(BaseModel,):
     schoolName: str
     schoolEnglishName: str
     specializedSubject: str
@@ -8,6 +9,11 @@ class Major(BaseModel):
     qsRanking: str
     qsRanking_top_100: bool
     major_id: str
+
+    @total_ordering
+    def __lt__(self, other):
+        return int(self.qsRanking) < int(other.qsRanking)
+
 
 class TieredResult(BaseModel):
     tierRanking: int
