@@ -34,3 +34,20 @@ class InputMessage(BaseModel):
     GPA: float
     grade: str
     userID: str
+
+
+class MajorRequest(BaseModel):
+    major_id: str
+
+
+class MajorResponse(BaseModel):
+    major: Major
+    majorMainSubject: str
+    programLength: str
+    entranceTime: str
+    tuition: str
+    toefl: str
+    ielts: str
+    toeflSub: str
+    ieltsSub: str
+    curriculum: str
